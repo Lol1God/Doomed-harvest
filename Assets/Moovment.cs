@@ -2,29 +2,29 @@ using UnityEngine;
 
 public class Moovment : MonoBehaviour
 {
-    // Основные настройки движения
+    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     public float speed = 6f;
     public float speedFust = 10f;
-    public float jumpForce = 8f; // Сила прыжка
-    public float gravity = -20f; // Увеличим гравитацию для более реалистичного прыжка
+    public float jumpForce = 8f; // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+    public float gravity = -20f; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 
-    // Настройки приседания
-    public float crouchSpeed = 3f; // Скорость в приседе
-    public float crouchHeight = 0.5f; // Высота в приседе (относительно исходной)
-    public float crouchTransitionSpeed = 10f; // Скорость анимации приседания
+    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+    public float crouchSpeed = 3f; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+    public float crouchHeight = 0.5f; // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
+    public float crouchTransitionSpeed = 10f; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 
-    // Приватные переменные
+    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     private CharacterController characterController;
-    private Vector3 velocity; // Для учета вертикальной скорости (гравитация + прыжок)
-    private bool isGrounded; // Проверка на земле ли персонаж
-    private bool isCrouching; // Проверка приседания
-    private float originalHeight; // Исходная высота CharacterController
-    private Vector3 originalCenter; // Исходный центр CharacterController
+    private Vector3 velocity; // пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ + пїЅпїЅпїЅпїЅпїЅпїЅ)
+    private bool isGrounded; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+    private bool isCrouching; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+    private float originalHeight; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ CharacterController
+    private Vector3 originalCenter; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ CharacterController
 
-    // Настройки проверки земли
-    public Transform groundCheck; // Опционально: пустой объект для проверки земли
-    public float groundDistance = 0.4f; // Дистанция проверки земли
-    public LayerMask groundMask; // Слой земли
+    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+    public Transform groundCheck; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+    public float groundDistance = 0.4f; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+    public LayerMask groundMask; // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 
     void Start()
     {
@@ -32,15 +32,15 @@ public class Moovment : MonoBehaviour
 
         if (characterController == null)
         {
-            Debug.LogError("CharacterController не найден!");
+            Debug.LogError("CharacterController пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ!");
             return;
         }
 
-        // Сохраняем исходные параметры CharacterController
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ CharacterController
         originalHeight = characterController.height;
         originalCenter = characterController.center;
 
-        // Если не задан groundCheck, используем позицию персонажа
+        // пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ groundCheck, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         if (groundCheck == null)
         {
             groundCheck = transform;
@@ -49,52 +49,53 @@ public class Moovment : MonoBehaviour
 
     void Update()
     {
-        // Проверка на земле ли персонаж
+        //22789304005976
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         isGrounded = characterController.isGrounded;
-        // Альтернативный способ с Raycast (более точный):
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ Raycast (пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ):
         // isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
-        // Если на земле и падает вниз - обнуляем вертикальную скорость
+        // пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         if (isGrounded && velocity.y < 0)
         {
-            velocity.y = -2f; // Небольшая отрицательная скорость для "прижатия" к земле
+            velocity.y = -2f; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ" пїЅ пїЅпїЅпїЅпїЅпїЅ
         }
 
-        // Обработка приседания
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         HandleCrouch();
 
-        // Получаем ввод с клавиатуры
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
 
-        // Вычисляем движение
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         Vector3 move = transform.right * horizontal + transform.forward * vertical;
 
-        // Определяем скорость в зависимости от состояния
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         float currentSpeed = isCrouching ? crouchSpeed : (Input.GetKey(KeyCode.LeftShift) ? speedFust : speed);
 
-        // Применяем скорость и время
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ
         move *= currentSpeed * Time.deltaTime;
 
-        // Прыжок (только если на земле и не приседает)
+        // пїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
         if (Input.GetButtonDown("Jump") && isGrounded && !isCrouching)
         {
             velocity.y = Mathf.Sqrt(jumpForce * -2f * gravity);
         }
 
-        // Применяем гравитацию
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         velocity.y += gravity * Time.deltaTime;
 
-        // Добавляем вертикальную скорость к движению
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         move.y = velocity.y * Time.deltaTime;
 
-        // Двигаем персонажа
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         characterController.Move(move);
     }
 
     void HandleCrouch()
     {
-        // Начало приседания (если на земле)
+        // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ)
         if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.C))
         {
             if (isGrounded && !isCrouching)
@@ -102,17 +103,17 @@ public class Moovment : MonoBehaviour
                 isCrouching = true;
             }
         }
-        // Прекращение приседания (отпустили клавишу)
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
         else if ((Input.GetKeyUp(KeyCode.LeftControl) || Input.GetKeyUp(KeyCode.C)) && isCrouching)
         {
-            // Проверяем, нет ли препятствия над головой
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             if (!CheckCeiling())
             {
                 isCrouching = false;
             }
         }
 
-        // Плавное изменение высоты CharacterController
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ CharacterController
         if (isCrouching)
         {
             characterController.height = Mathf.Lerp(
@@ -121,7 +122,7 @@ public class Moovment : MonoBehaviour
                 Time.deltaTime * crouchTransitionSpeed
             );
 
-            // Корректируем центр контроллера
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             Vector3 newCenter = originalCenter;
             newCenter.y = characterController.height / 2f;
             characterController.center = Vector3.Lerp(
@@ -138,7 +139,7 @@ public class Moovment : MonoBehaviour
                 Time.deltaTime * crouchTransitionSpeed
             );
 
-            // Возвращаем центр в исходное положение
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             characterController.center = Vector3.Lerp(
                 characterController.center,
                 originalCenter,
@@ -149,23 +150,23 @@ public class Moovment : MonoBehaviour
 
     bool CheckCeiling()
     {
-        // Проверяем Raycast'ом, есть ли что-то над головой
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ Raycast'пїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ-пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         float rayLength = (originalHeight - characterController.height) + 0.1f;
         Vector3 rayStart = transform.position + Vector3.up * characterController.height;
 
         if (Physics.Raycast(rayStart, Vector3.up, rayLength))
         {
-            return true; // Есть препятствие, нельзя вставать
+            return true; // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         }
-        return false; // Можно вставать
+        return false; // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     }
 
-    // Опционально: для визуализации проверки земли и потолка
+    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     void OnDrawGizmosSelected()
     {
         if (characterController != null)
         {
-            // Визуализация проверки потолка
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             Gizmos.color = Color.yellow;
             Vector3 rayStart = transform.position + Vector3.up * characterController.height;
             float rayLength = (originalHeight - characterController.height) + 0.1f;
